@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Jarvis · Private Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0b09;
+  --surface: #141413;
+  --surface-2: #1c1b19;
+  --cream: #f3efe6;
+  --gold: #c4a574;
+  --gold-dim: #8a7350;
+  --text: #e8e4dc;
+  --muted: #8a8680;
+  --border: rgba(196, 165, 116, 0.12);
+  --success: #4ade80;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 14.5px;
+  line-height: 1.55;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+header {
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(12, 11, 9, 0.85);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.logo {
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  font-size: 11px;
+  color: var(--gold);
+}
+.status {
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dot {
+  width: 7px;
+  height: 7px;
+  background: var(--success);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
+  animation: pulse 2.4s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.45); }
+  70% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+main {
+  flex: 1;
+  display: flex;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 0;
+}
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  min-width: 0;
+}
+.messages {
+  flex: 1;
+  padding: 28px 32px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.msg {
+  max-width: 68%;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  position: relative;
+}
+.msg.user {
+  align-self: flex-end;
+  background: var(--surface-2);
+  color: var(--cream);
+  border: 1px solid transparent;
+}
+.msg.jarvis {
+  align-self: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.msg .time {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 6px;
+  letter-spacing: 0.04em;
+}
+.input-bar {
+  padding: 18px 28px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: rgba(12, 11, 9, 0.6);
+}
+input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--cream);
+  padding: 13px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:focus { border-color: var(--gold-dim); }
+button {
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  padding: 13px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  transition: opacity 0.15s, transform 0.1s;
+}
+button:hover { opacity: 0.92; }
+button:active { transform: scale(0.98); }
+button.secondary {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold-dim);
+}
+.side {
+  width: 340px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow-y: auto;
+}
+.section-title {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.project {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.project:hover { border-color: var(--gold-dim); }
+.project h4 {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.project p {
+  font-size: 12px;
+  color: var(--muted);
+}
+.badge {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: rgba(196, 165, 116, 0.1);
+  color: var(--gold);
+  margin-top: 8px;
+}
+.call-btn {
+  margin-top: 10px;
+  width: 100%;
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold-dim);
+  padding: 9px;
+  font-size: 12px;
+}
+.waveform {
+  display: none;
+  height: 28px;
+  align-items: center;
+  gap: 3px;
+  margin-left: 8px;
+}
+.waveform.active { display: flex; }
+.bar {
+  width: 2px;
+  background: var(--gold);
+  border-radius: 1px;
+  animation: wave 1s ease-in-out infinite;
+}
+.bar:nth-child(2) { animation-delay: 0.1s; }
+.bar:nth-child(3) { animation-delay: 0.2s; }
+.bar:nth-child(4) { animation-delay: 0.3s; }
+.bar:nth-child(5) { animation-delay: 0.4s; }
+@keyframes wave {
+  0%, 100% { height: 6px; }
+  50% { height: 18px; }
+}
+.sys-info {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+@media (max-width: 860px) {
+  main { flex-direction: column; }
+  .side { width: 100%; border-top: 1px solid var(--border); padding: 20px; }
+  .chat { border-right: none; }
+  .messages { padding: 20px; }
+  .input-bar { padding: 14px 16px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">JARVIS · PRIVATE DESK</div>
+  <div class="status">
+    <span class="dot"></span>
+    <span id="clock">—</span>
+  </div>
+</header>
+<main>
+  <section class="chat">
+    <div class="messages" id="messages">
+      <div class="msg jarvis">
+        Good evening. Jarvis online. How may I assist with your projects today?
+        <div class="time">Now</div>
+      </div>
+    </div>
+    <div class="input-bar">
+      <input type="text" id="input" placeholder="Message or command…" autocomplete="off">
+      <div class="waveform" id="waveform">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      </div>
+      <button id="voiceBtn" class="secondary">Voice</button>
+      <button id="sendBtn">Send</button>
+    </div>
+  </section>
+  <aside class="side">
+    <div>
+      <div class="section-title">Active Projects</div>
+      <div class="project">
+        <h4>AurumX Terminal</h4>
+        <p>Luxury paper-trading desk</p>
+        <div class="badge">Review</div>
+        <button class="call-btn" data-project="AurumX">Call to settle</button>
+      </div>
+      <div class="project">
+        <h4>OmniRoute Gateway</h4>
+        <p>Free AI routing layer</p>
+        <div class="badge">Deploy</div>
+        <button class="call-btn" data-project="OmniRoute">Call to settle</button>
+      </div>
+      <div class="project">
+        <h4>THE OUTLIER</h4>
+        <p>Sci-fi cinematic landing</p>
+        <div class="badge">Production</div>
+        <button class="call-btn" data-project="THE OUTLIER">Call to settle</button>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">System</div>
+      <div class="sys-info">
+        Voice: Orion · Multilingual<br>
+        Recognition: Browser native<br>
+        Call routing: Ready for backend<br>
+        Aesthetic: Private desk
+      </div>
+    </div>
+  </aside>
+</main>
+<script>
+const messages = document.getElementById('messages');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('sendBtn');
+const voiceBtn = document.getElementById('voiceBtn');
+const waveform = document.getElementById('waveform');
+const clockEl = document.getElementById('clock');
+
+function updateClock() {
+  const now = new Date();
+  clockEl.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+updateClock();
+setInterval(updateClock, 10000);
+
+function timeNow() {
+  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function addMsg(text, who) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + who;
+  div.innerHTML = text + '<div class="time">' + timeNow() + '</div>';
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function jarvisReply(userText) {
+  const lower = userText.toLowerCase();
+  let reply = "Understood. Noted and queued.";
+  if (lower.includes('project') || lower.includes('settle') || lower.includes('call')) {
+    reply = "Project registered. I can initiate a call to walk through the remaining items. Confirm?";
+  } else if (lower.includes('aurumx')) {
+    reply = "AurumX remains paper. Desk is quiet. What requires attention?";
+  } else if (lower.includes('hello') || lower.includes('hi') || lower.includes('hye') || lower.includes('baik')) {
+    reply = "Good evening. I am present. Which project shall we settle?";
+  } else if (lower.includes('status')) {
+    reply = "All systems nominal. Three active projects. Voice channel ready.";
+  }
+  setTimeout(() => addMsg(reply, 'jarvis'), 380);
+}
+
+sendBtn.addEventListener('click', () => {
+  const text = input.value.trim();
+  if (!text) return;
+  addMsg(text, 'user');
+  input.value = '';
+  jarvisReply(text);
+});
+
+input.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') sendBtn.click();
+});
+
+let recognition;
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  recognition.onresult = (event) => {
+    const text = event.results[0][0].transcript;
+    input.value = text;
+    sendBtn.click();
+  };
+  recognition.onerror = () => stopListening();
+  recognition.onend = () => stopListening();
+}
+
+function startListening() {
+  if (!recognition) {
+    alert('Speech recognition not available in this browser.');
+    return;
+  }
+  voiceBtn.textContent = 'Listening';
+  waveform.classList.add('active');
+  recognition.start();
+}
+function stopListening() {
+  voiceBtn.textContent = 'Voice';
+  waveform.classList.remove('active');
+}
+
+voiceBtn.addEventListener('click', () => {
+  if (voiceBtn.textContent === 'Listening') {
+    recognition && recognition.stop();
+  } else {
+    startListening();
+  }
+});
+
+document.querySelectorAll('.call-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const project = btn.dataset.project;
+    addMsg(`Initiate call for ${project}`, 'user');
+    setTimeout(() => {
+      addMsg(`Call prepared for ${project}. I will contact you shortly. Confirm window?`, 'jarvis');
+    }, 420);
+  });
+});
+
+window.addEventListener('load', () => {
+  const audio = new Audio('greeting.mp3');
+  audio.volume = 0.55;
+  audio.play().catch(() => {});
+});
+</script>
+</body>
+</html>
